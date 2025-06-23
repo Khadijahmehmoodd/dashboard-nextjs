@@ -1,12 +1,14 @@
+// auth.ts
 import NextAuth from 'next-auth';
 import { authConfig } from './auth.config';
 import Credentials from 'next-auth/providers/credentials';
- import { z } from 'zod';
- import type { User } from '@/app/lib/definitions';
+import { z } from 'zod';
 import bcrypt from 'bcrypt';
 import postgres from 'postgres';
+import type { User } from '@/app/lib/definitions';
+
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
- 
+
 async function getUser(email: string): Promise<User | undefined> {
   try {
     const user = await sql<User[]>`SELECT * FROM users WHERE email=${email}`;
@@ -16,6 +18,7 @@ async function getUser(email: string): Promise<User | undefined> {
     throw new Error('Failed to fetch user.');
   }
 }
+
 export const { auth, signIn, signOut } = NextAuth({
   ...authConfig,
   providers: [
