@@ -1,5 +1,5 @@
 import NextAuth from 'next-auth';
-import { authConfig } from '@/auth.config'; // your config (pages + callbacks)
+import { authConfig } from '@/auth.config';
 import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
 import bcrypt from 'bcrypt';
@@ -52,4 +52,5 @@ const handler = NextAuth({
   ],
 });
 
-export { handler as GET, handler as POST };
+// ✅ Must be default export for [...nextauth]
+export default handler;
