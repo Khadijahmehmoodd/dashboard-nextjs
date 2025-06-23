@@ -8,17 +8,15 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
-
       if (isOnDashboard) {
-        return isLoggedIn; // allow or deny dashboard
-      }
-
-      if (isLoggedIn) {
+        return isLoggedIn;
+      } else if (isLoggedIn) {
         return Response.redirect(new URL('/dashboard', nextUrl));
       }
-
-      return true; // allow access to non-dashboard pages
+      return true;
     },
   },
-  providers: undefined as any, // ✅ defer to `auth.ts` where real providers are defined
+  // 👇 this satisfies TypeScript but is ignored in runtime
+  providers: [] as any,
 } satisfies NextAuthConfig;
+
